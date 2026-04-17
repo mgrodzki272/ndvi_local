@@ -1,2 +1,3 @@
-Place RED/NIR GeoTIFF bands here for local testing.
-These files are not tracked in git (too large for GitHub).
+Umieść tutaj pasma RED/NIR w formacie GeoTIFF do lokalnych testów.
+Te pliki nie są śledzone w git (są zbyt duże dla GitHuba).
+
