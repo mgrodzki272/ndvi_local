@@ -15,7 +15,7 @@ Minimalny projekt do policzenia NDVI z dwoch plikow GeoTIFF (RED + NIR).
 
 ```bash
 conda activate ndvi
-cd /Users/mateuszg/Documents/CV
+cd /ścieżka do folderu roboczego
 pip install -r server_requirements.txt
 uvicorn app:app --reload --port 8000
 ```
@@ -28,3 +28,6 @@ Wgraj dwa pliki GeoTIFF:
 - NIR band (np. Sentinel-2 B08)
 
 Backend zwraca podglad NDVI jako PNG (nie zapisuje wyniku na dysk).
+
+<img width="892" height="636" alt="image" src="https://github.com/user-attachments/assets/8cbaa4d0-5536-47a2-8e22-81f747b39f3c" />
+
