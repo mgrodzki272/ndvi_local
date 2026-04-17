@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NDVI Calculator</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; padding: 24px; background: #0b1220; color: #e6edf3; }
+      .card { max-width: 900px; margin: 0 auto; background: #0f1b33; border: 1px solid #23304a; border-radius: 12px; padding: 16px; }
+      h1 { margin: 0 0 6px; font-size: 20px; }
+      p { margin: 8px 0; color: #b7c2cc; line-height: 1.4; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      label { display: block; font-weight: 700; margin-bottom: 8px; }
+      input[type="file"] { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #23304a; background: #0b1220; color: #e6edf3; }
+      button { margin-top: 14px; padding: 10px 14px; border-radius: 10px; border: 1px solid #2d3b5a; background: #1d4ed8; color: white; font-weight: 800; cursor: pointer; display: inline-flex; gap: 10px; align-items: center; }
+      button:disabled { opacity: 0.6; cursor: not-allowed; }
+      .spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 999px; animation: spin 0.8s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      img { width: 100%; display: block; margin-top: 14px; border-radius: 12px; border: 1px solid #23304a; background: #050a14; }
+      .hint { margin-top: 10px; font-size: 13px; color: #93a4b5; }
+      @media (max-width: 720px) { .row { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- React z CDN, bez npm -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <script>
+      const e = React.createElement;
+
+      function App() {
+        const [redFile, setRedFile] = React.useState(null);
+        const [nirFile, setNirFile] = React.useState(null);
+        const [busy, setBusy] = React.useState(false);
+        const [imageUrl, setImageUrl] = React.useState("");
+
+        const canRun = redFile && nirFile && !busy;
+
+        async function run() {
+          if (imageUrl) URL.revokeObjectURL(imageUrl);
+          setImageUrl("");
+
+          setBusy(true);
+          const form = new FormData();
+          form.append("red", redFile);
+          form.append("nir", nirFile);
+          const res = await fetch("/api/ndvi", { method: "POST", body: form });
+          const blob = await res.blob();
+          setImageUrl(URL.createObjectURL(blob));
+          setBusy(false);
+        }
+
+        return e(
+          "div",
+          { className: "card" },
+          e("h1", null, "NDVI Calculator"),
+          e("p", null, "Upload RED and NIR GeoTIFF bands to compute NDVI."),
+          e(
+            "div",
+            { className: "row" },
+            e(
+              "div",
+              null,
+              e("label", null, "RED band"),
+              e("input", {
+                type: "file",
+                accept: ".tif,.tiff",
+                onChange: (ev) => setRedFile(ev.target.files && ev.target.files[0] ? ev.target.files[0] : null),
+              })
+            ),
+            e(
+              "div",
+              null,
+              e("label", null, "NIR band"),
+              e("input", {
+                type: "file",
+                accept: ".tif,.tiff",
+                onChange: (ev) => setNirFile(ev.target.files && ev.target.files[0] ? ev.target.files[0] : null),
+              })
+            )
+          ),
+          e(
+            "button",
+            { disabled: !canRun, onClick: run },
+            busy ? e("span", { className: "spinner" }) : null,
+            busy ? "Computing..." : "Compute NDVI"
+          ),
+          imageUrl ? e("img", { src: imageUrl, alt: "NDVI preview" }) : null,
+          e("div", { className: "hint" }, "Output: NDVI preview (PNG).")
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+    </script>
+  </body>
+</html>

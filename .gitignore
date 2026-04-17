@@ -1,0 +1,11 @@
+.DS_Store
+.Rhistory
+__pycache__/
+.pycache/
+*.pyc
+.venv/
+.cache/
+
+# Large GeoTIFFs exceed GitHub file size limits; keep locally only
+ndvi/*.tif
+ndvi/*.tiff
