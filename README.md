@@ -28,7 +28,3 @@ Wgraj dwa pliki GeoTIFF:
 - NIR band (np. Sentinel-2 B08)
 
 Backend zwraca podglad NDVI jako PNG (nie zapisuje wyniku na dysk).
-
-## Jak to dziala
-
-Zobacz: `HOW_IT_WORKS.md` (wytlumaczenie linia po linii).
