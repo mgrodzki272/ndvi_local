@@ -1,10 +1,10 @@
-# NDVI Calculator (FastAPI + minimal UI)
+# NDVI Calculator 
 
-Minimalny projekt do policzenia NDVI z dwoch plikow GeoTIFF (RED + NIR).
+Projekt do policzenia NDVI z dwoch plikow GeoTIFF (RED + NIR).
 
 - Backend: `app.py` (FastAPI, obliczenia w Pythonie)
 - Frontend: `web/index.html` (minimalny UI w przegladarce)
-- Lokalne dane testowe: wrzuc pliki `.tif` do `ndvi/` (nie sa w repozytorium — GitHub ma limit ~100 MB na plik)
+- Lokalne dane testowe: wrzuc pliki 
 
 ## Wymagania
 
